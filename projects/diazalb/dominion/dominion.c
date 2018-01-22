@@ -671,7 +671,7 @@ void adventurerCard(int currentPlayer, struct gameState *state, int z, int temph
     }
 }
 
-void remodelCard(int currentPlayer, struct gameState *state, int handPos, int choice1, int choice2)
+int remodelCard(int currentPlayer, struct gameState *state, int handPos, int choice1, int choice2)
 {
 	int i;
 	int j;
@@ -696,13 +696,15 @@ void remodelCard(int currentPlayer, struct gameState *state, int handPos, int ch
 			break;
 	    }
 	}
+	
+	return 0;
 }
 
 
 void smithyCard(int currentPlayer, struct gameState *state, int handPos)
 {
 	//+3 Cards
-	int i
+	int i;
     for (i = 0; i < 2; i++)
 	{
 	  drawCard(currentPlayer, state);
@@ -749,8 +751,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
   int tributeRevealedCards[2] = {-1, -1};
   int temphand[MAX_HAND];// moved above the if statement
-  int drawntreasure=0;
-  int cardDrawn;
+  //int drawntreasure=0;
+  //int cardDrawn;
   int z = 0;// this is the counter for the temp hand
   if (nextPlayer > (state->numPlayers - 1)){
     nextPlayer = 0;
@@ -762,7 +764,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     {
     case adventurer:
 		//insert adventurer function here
-		void adventurerCard(currentPlayer, state, z, temphand);
+		adventurerCard(currentPlayer, state, z, temphand);
       return 0;
 			
     case council_room:
@@ -882,8 +884,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			
     case remodel:
 		//insert remodel function here
-		void remodelCard(currentPlayer, state, handPos, choice1, choice2)
-      return 0;
+		
+      return remodelCard(currentPlayer, state, handPos, choice1, choice2);
 		
     case smithy:
 		//insert smithy function here
@@ -891,7 +893,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case village:
-		villageCard(currentPlayer, handPos, state);
+		villageCard(currentPlayer, state, handPos);
       return 0;
 		
     case baron:
@@ -946,7 +948,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case great_hall:
-		great_hallCard(currentPlayer, state, handPos)
+		great_hallCard(currentPlayer, state, handPos);
     return 0;
 		
     case minion:
