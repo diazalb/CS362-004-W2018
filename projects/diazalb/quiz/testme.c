@@ -13,9 +13,9 @@
 
 /*
 	The inputChar() will returns a random integer corresponding to ASCII table.
-	It utilizes the rand() and has a range from 32 to 127.  It is able to quickly
-	provide a random number and with the small range of numbers finds state 9 quickly
-	as well.
+	It utilizes the rand() and has a range from 32 to 127.  It is able to 
+	quickly provide a random number and with the small range of numbers finds
+	state 9 quickly as well.
  */
 char inputChar()
 {
@@ -24,11 +24,15 @@ char inputChar()
 }
 
 /*
-	The inputString() will build a random string up of length 6 characters.  The first 5 characters
-	will be filled with a random integer and the 6th character will be a '\0'.  It took billions
-	iterations for my test to find the error.  This shows how much increase in testing coverage is required 
-	when a few more values are required to be checked.  Reducing the range of characters used to provide a closer
-	chance to target was necessary to make the testing complete faster.
+	The inputString() will build a random string up of length 6 characters.
+	The first 5 characters will be filled with a random integer and the 6th 
+	character will be a '\0'.  It took billions iterations for my test to find
+	the error.  This shows how much increase in testing coverage is required 
+	when a few more values are required to be checked.  Reducing the range of 
+	characters to 97 to 123 used to provide a closer chance to target was 
+	necessary to make the testing complete faster.  It took only 2.15 million 
+	iterations to find the error versus what could have taken hours to days 
+	with the range of 32 to 123.
  */
 char *inputString()
 {
@@ -45,6 +49,12 @@ char *inputString()
 	return string;
 }
 
+/*
+	The testme() utilizes both the inputChar() and inputString() developed with
+	a series of 'IF' statements to obtain state 9 and check if a string value
+	is equal to 'reset' and has a state value of 9.  Once those two conditions
+	are met the function will print "error" and exit.
+ */
 void testme()
 {
 	int tcCount = 0;
