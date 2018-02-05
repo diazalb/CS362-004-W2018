@@ -1,0 +1,69 @@
+        -:    0:Source:unittest4.c
+        -:    0:Graph:unittest4.gcno
+        -:    0:Data:unittest4.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include <assert.h>
+        -:    6:#include "rngs.h"
+        -:    7:
+        -:    8:#define TESTUNIT "shuffle()"
+        -:    9:
+        -:   10:int failCount = 0;
+        -:   11:
+        2:   12:void testCheck(int a, int b) {
+        2:   13:	if (a == b) {
+        2:   14:		printf("PASSED\n");
+        -:   15:	}
+        -:   16:	else {
+    #####:   17:		printf("FAILED\n");
+    #####:   18:		failCount++;
+        -:   19:	}
+        2:   20:}
+        -:   21:
+        -:   22:
+        1:   23:int main () {
+        -:   24:    int i, b;
+        -:   25:	int handCount;
+        1:   26:    int numPlayers = 2;
+        1:   27:    int seed = 1000;
+        1:   28:    int bonus = 1;
+        -:   29:
+        -:   30:	struct gameState G;
+        -:   31:	
+        -:   32:	// kingdom cards
+        1:   33:    int k[10] = {adventurer, council_room, feast, gardens, mine, remodel, smithy, 
+        -:   34:				village, baron, great_hall};
+        -:   35:			
+        -:   36:
+        1:   37:	printf("\n\n");
+        1:   38:	printf("---------------- Unit Test 4 ----------------\n\n");
+        -:   39:
+        1:   40:	printf("-------------- Testing : %s ----------------\n", TESTUNIT);
+        -:   41:
+        1:   42:    memset(&G,23,sizeof(struct gameState));
+        1:   43:    initializeGame(numPlayers, k, seed, &G);
+        -:   44:
+        1:   45:	printf("\nTEST Player shuffle with Zero Cards: ");
+        1:   46:    G.deckCount[0] = 0;
+        1:   47:    testCheck(shuffle(0,&G),-1);
+        -:   48:
+        1:   49:    printf("\nTest Player shuffle with 10 cards in deck: ");
+        1:   50:    G.deckCount[0] = 10;
+        1:   51:    shuffle(0,&G);
+        1:   52:    testCheck(G.deckCount[0],10);
+        -:   53:
+        -:   54:	//DISPLAY TEST FINAL TEST RESULTS
+        1:   55:	if (failCount) {
+    #####:   56:		printf("\nTEST FAILED\n");
+    #####:   57:		printf("Number of Fails: %d\n", failCount);
+        -:   58:	}
+        -:   59:	else {
+        1:   60:		printf("\n100% COMPLETED TEST SUCCESSFULLY\n\n");
+        -:   61:	}
+        -:   62:
+        1:   63:    return 0;
+        -:   64:}

@@ -1,0 +1,110 @@
+        -:    0:Source:cardtest4.c
+        -:    0:Graph:cardtest4.gcno
+        -:    0:Data:cardtest4.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include <assert.h>
+        -:    6:#include "rngs.h"
+        -:    7:
+        -:    8:#define TESTCARD "council_room"
+        -:    9:
+        -:   10:int failCount = 0;
+        -:   11:
+        -:   12:// function to check if two ints are equal or not
+       18:   13:void testCheck(int a, int b) {
+       18:   14:	if (a == b) {
+       15:   15:		printf("PASSED\n");
+        -:   16:	}
+        -:   17:	else {
+        3:   18:		printf("FAILED\n");
+        3:   19:		failCount++;
+        -:   20:	}
+       18:   21:}
+        -:   22:
+        1:   23:int main() {
+        -:   24:	int i;
+        1:   25:	int seed = 1000;
+        1:   26:	int treasureAfter = 0, treasureBefore = 0;
+        1:   27:	int numPlayers = 2;
+        -:   28:	int card;
+        1:   29:	int handpos = 0;
+        1:   30:	int bonus = 0;
+        -:   31:
+        -:   32:	// kingdom cards
+        1:   33:	int k[10] = { adventurer, council_room, feast, gardens, mine, remodel, 
+        -:   34:				smithy, village, baron, great_hall };
+        -:   35:
+        -:   36:	// game states
+        -:   37:	struct gameState G, OG;
+        -:   38:
+        1:   39:	printf("\n\n");
+        1:   40:	printf("---------------- Card Test 4 ----------------\n\n");
+        -:   41:
+        1:   42:	printf("-------------- Testing Card: %s ----------------\n", TESTCARD);
+        -:   43:	
+        1:   44:	memset(&G, 23, sizeof(struct gameState));
+        1:   45:	memset(&OG, 23, sizeof(struct gameState));
+        -:   46:
+        -:   47:	//create a new game
+        1:   48:	initializeGame(numPlayers, k, seed, &G);
+        -:   49:
+        -:   50:	//Copy Initialized game state to 'OG'
+        1:   51:	memcpy(&OG, &G, sizeof(struct gameState));
+        -:   52:
+        -:   53:	//Play Card
+        1:   54:	cardEffect(TESTCARD, 0, 0, 0, &G, handpos, &bonus);
+        -:   55:
+        -:   56:	//TEST Player Gains +4 Cards -1 Discard
+        1:   57:	printf("\nTest: Player 0 +3 Cards (+4 Cards -1 Discard)");
+        1:   58:	testCheck(G.handCount[0], OG.handCount[0] + 3);
+        -:   59:	
+        -:   60:	//TEST Player 0 gains +1 Buy
+        1:   61:	printf("\nTest: Player 0 gains +1 Buy");
+        1:   62:	testCheck(G.numBuys, OG.numBuys + 1);
+        -:   63:	
+        -:   64:	//TEST Player 0 Deck -4 Drawn
+        1:   65:	printf("\nTest: Player 0 Deck -4 Drawn");
+        1:   66:	testCheck(G.deckCount[0], OG.deckCount[0] - 4);
+        -:   67:
+        -:   68:	//TEST Other Player Hand & Deck
+        1:   69:	printf("\nTEST: Check Player 1 status unchanged\n");
+        1:   70:	printf("Hand Count: ");
+        1:   71:	testCheck(G.handCount[1], OG.handCount[1]);
+        -:   72:	
+        1:   73:	printf("Deck Count: ");
+        1:   74:	testCheck(G.deckCount[1], OG.deckCount[1]);
+        -:   75:
+        -:   76:	//TEST STATUS of Kingdom Cards
+        1:   77:	printf("\nTEST: Check kingdom card status unchanged\n");
+       11:   78:	for (i = 0; i < 10; i++) {
+       10:   79:		printf("Kingdom Card %i: ", i);
+       10:   80:		testCheck(G.supplyCount[k[i]], OG.supplyCount[k[i]]);
+        -:   81:	}
+        -:   82:
+        -:   83:	//TEST STATUS OF Victory Cards
+        1:   84:	printf("\nTEST: Check victory card status unchanged\n");
+        1:   85:	printf("Province Pile: ");
+        1:   86:	testCheck(G.supplyCount[province], OG.supplyCount[province]);
+        -:   87:	
+        1:   88:	printf("Duchy Pile: ");
+        1:   89:	testCheck(G.supplyCount[duchy], OG.supplyCount[duchy]);
+        -:   90:	
+        1:   91:	printf("Estate Pile: ");
+        1:   92:	testCheck(G.supplyCount[estate], OG.supplyCount[estate]);
+        -:   93:
+        -:   94:
+        -:   95:	//DISPLAY TEST FINAL TEST RESULTS
+        1:   96:	if (failCount) {
+        1:   97:		printf("\nTEST FAILED\n");
+        1:   98:		printf("Number of Fails: %d\n", failCount);
+        -:   99:	}
+        -:  100:	else {
+    #####:  101:		printf("\n100% COMPLETED TEST SUCCESSFULLY\n\n");
+        -:  102:	}
+        -:  103:
+        1:  104:	return 0;
+        -:  105:}
