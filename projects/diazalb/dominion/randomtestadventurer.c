@@ -6,7 +6,7 @@
 #include "dominion_helpers.h"
 #include "rngs.h"
 
-#define tests 1000
+#define tests 10000
 #define criteria 3
 #define MAX_PLAYERS 4
 #define TESTCARD "adventurer"

@@ -1,0 +1,84 @@
+        -:    0:Source:randomtestcard1.c
+        -:    0:Graph:randomtestcard1.gcno
+        -:    0:Data:randomtestcard1.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <stdlib.h>
+        -:    2:#include <stdio.h>
+        -:    3:#include <time.h>
+        -:    4:#include <string.h>
+        -:    5:#include "dominion.h"
+        -:    6:#include "dominion_helpers.h"
+        -:    7:#include "rngs.h"
+        -:    8:
+        -:    9:#define tests 10000
+        -:   10:#define criteria 2
+        -:   11:#define MAX_PLAYERS 4
+        -:   12:#define TESTCARD "council_room"
+        -:   13:
+        -:   14:int failed = 0;
+        -:   15:
+        -:   16:// function to check if two ints are equal or not
+    30000:   17:void testCheck(int a, int b) {
+    30000:   18:	if (a == b) {
+    10000:   19:		printf("PASSED\n");
+        -:   20:	}
+        -:   21:	else {
+    20000:   22:		printf("FAILED\n");
+    20000:   23:		failed++;
+        -:   24:	}
+    30000:   25:}
+        -:   26:
+        1:   27:int main()
+        -:   28:{
+        1:   29:    srand(time(NULL));
+        -:   30:	int i;
+        -:   31:	
+        1:   32:	printf("\n\n");
+        1:   33:	printf("---------------- Random Card Test 1 ----------------\n\n");
+        -:   34:
+        1:   35:	printf("-------------- Testing Card: %s ----------------\n", TESTCARD);
+        -:   36:	
+    10001:   37:    for(i = 0; i < tests; i++)
+        -:   38:	{
+        -:   39:
+        -:   40:        struct gameState afterTest;
+        -:   41:		
+    10000:   42:        int k[10] = {adventurer, gardens, embargo, village, steward, 
+        -:   43:					mine, cutpurse, sea_hag, tribute, smithy};
+        -:   44:
+        -:   45:		//establish game settings into afterTest
+    10000:   46:        initializeGame(MAX_PLAYERS, k, rand(), &afterTest);
+        -:   47:
+    10000:   48:        int player = rand() % 4;
+    10000:   49:        afterTest.whoseTurn = player;
+        -:   50:        
+    10000:   51:        int choice1 = rand() % 50;
+    10000:   52:        int choice2 = rand() % 50;
+    10000:   53:        int choice3 = rand() % 50;
+    10000:   54:        int handPos = rand() % MAX_HAND;
+    10000:   55:		int bonus = rand() % 50;
+        -:   56:		
+        -:   57:		//create a copy of the initialized game before using cardEffect
+        -:   58:        struct gameState beforeTest;
+    10000:   59:        memcpy(&beforeTest, &afterTest, sizeof(struct gameState));
+        -:   60:
+        -:   61:		//use the council_room
+    10000:   62:        cardEffect(TESTCARD, choice1, choice2, choice3, &afterTest, handPos, &bonus);
+        -:   63:
+        -:   64:
+        -:   65:	//TEST Player Gains 1 Card and Discards 1 village card
+    10000:   66:	printf("Player 0 Hand Count: +1 Card -1 Discard");
+    10000:   67:	testCheck(afterTest.handCount[0], beforeTest.handCount[0]);
+        -:   68:	
+        -:   69:	//TEST Player Gains +2 Actions
+    10000:   70:	printf("Check Player 0 gains +2 Action");
+    10000:   71:	testCheck(afterTest.numActions, beforeTest.numActions + 2);
+        -:   72:
+        -:   73:	//TEST Player Deck -1 Card Drawn
+    10000:   74:	printf("Check Player 0 Deck -1 Drawn");
+    10000:   75:	testCheck(afterTest.deckCount[0], beforeTest.deckCount[0] - 1);
+        -:   76:
+        -:   77:	}
+        1:   78:    printf("Test Success Rate: %d of %d \n", tests * criteria - failed, tests * criteria);
+        1:   79:}
