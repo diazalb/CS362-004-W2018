@@ -1,0 +1,40 @@
+BUG 1 - Outpost Card
+	
+Test Case Inputs
+  numPlayers = 3
+  currentPlayer = 2
+
+Expected Output
+  Outpost played++
+  Player 2 discard 1 card
+
+Actual Output
+  Outpost played++
+  Player 2 did not discard a card
+  Player 3 discarded a card
+
+Instructions for reproduction
+    Platform Details – this was compiled and run on Flip, the OSU engineering server.
+    Version of SUT
+      Andrew Lodge code with Bugs Introduced in Assignment 2
+
+BUG 2 - COUNCIL ROOM CARD
+
+Test Case Inputs
+  Number of Players = 2
+  Current Player = 1
+
+Expected Output
+  Current Player Draws +4
+  Gets +1 Buy
+  Each other player draws +1 card
+
+Actual Output
+  Current Player Draws +4
+  Gets +1 Buy
+  Other player draws +2 card
+
+Instructions for reproduction
+    Platform Details – this was compiled and run on Flip, the OSU engineering server.
+    Version of SUT
+      Andrew Lodge code with Bugs Introduced in Assignment 2
